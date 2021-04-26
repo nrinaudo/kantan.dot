@@ -1,0 +1,9 @@
+digraph {
+    a[class=red]
+    b
+
+    subgraph {
+        c[class=green]
+        d
+    }
+}

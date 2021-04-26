@@ -1,0 +1,10 @@
+digraph {
+  a[color=red fontcolor=red]
+  b[color=red fontcolor=red]
+
+  a -> b
+
+  subgraph {
+    c[color=red fontcolor=red label="Nested"]
+  }
+}

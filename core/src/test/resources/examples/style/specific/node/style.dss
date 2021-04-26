@@ -1,0 +1,7 @@
+node.red {
+    color: red;
+}
+
+node.green {
+    color: green;
+}

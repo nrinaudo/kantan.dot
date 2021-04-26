@@ -1,0 +1,13 @@
+circo
+dot
+fdp
+neato
+osage
+patchwork
+sfdp
+twopi
+
+// The following layouts are ignored, as they create constraints on nodes that I don't really care to handle.
+// nop
+// nop1
+// nop2

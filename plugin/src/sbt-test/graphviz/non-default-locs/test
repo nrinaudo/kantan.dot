@@ -1,0 +1,5 @@
+# Makes sure that the graphviz command is executed properly when the source and target directories
+# have been changed.
+> graphviz
+$ must-mirror target/DOT/sample1.svg expected/sample1.svg
+$ must-mirror target/DOT/nested/sample2.svg expected/sample2.svg

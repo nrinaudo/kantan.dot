@@ -1,0 +1,13 @@
+digraph {
+    edge[fontcolor=yellow]
+
+    a -> b[class=red color=blue label=a2b]
+    c -> d[class=red label=c2d]
+
+    subgraph {
+        edge[fontcolor=blue]
+
+        e -> f[class=green color=yellow label=e2f]
+        g -> h[class=green label=g2h]
+    }
+}

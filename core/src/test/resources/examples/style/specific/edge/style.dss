@@ -1,0 +1,7 @@
+edge.red {
+    color: red;
+}
+
+edge.green {
+    color: green;
+}

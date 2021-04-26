@@ -1,0 +1,8 @@
+digraph {
+    color=red
+    a -> b
+    subgraph {
+        color=red
+        c -> d
+    }
+}

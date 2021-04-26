@@ -1,0 +1,5 @@
+# Makes sure that sbtSite will copy all images to a non-default target.
+
+> makeSite
+$ must-mirror target/site/graphviz/sample1.svg expected/sample1.svg
+$ must-mirror target/site/graphviz/nested/sample2.svg expected/sample2.svg

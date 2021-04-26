@@ -1,0 +1,23 @@
+graph {
+    bgcolor: black;
+}
+
+graph.red {
+    bgcolor:red;
+}
+
+graph.green {
+    bgcolor:green;
+}
+
+graph.blue {
+    bgcolor:blue;
+}
+
+graph.red.green {
+    bgcolor:yellow;
+}
+
+graph.blue.green {
+    bgcolor:cyan;
+}

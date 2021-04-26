@@ -1,0 +1,4 @@
+graph {
+    color: green;
+    bgcolor: red;
+}

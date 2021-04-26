@@ -1,0 +1,18 @@
+digraph {
+    a
+    b
+
+    subgraph cluster_foo {
+        color=red
+        bgcolor=blue
+
+        a -> b
+
+        subgraph bar {
+            color=blue
+            bgcolor=red
+            b -> a
+}
+    }
+
+}
