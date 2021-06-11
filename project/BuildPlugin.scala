@@ -57,8 +57,6 @@ object BuildPlugin extends AutoPlugin {
         tagRelease,
         releaseStepCommand("publishSigned"),
         releaseStepCommand("sonatypeReleaseAll"),
-        releaseStepCommand("makeSite"),
-        releaseStepCommand("ghpagesPushSite"),
         setNextVersion,
         commitNextVersion,
         pushChanges
