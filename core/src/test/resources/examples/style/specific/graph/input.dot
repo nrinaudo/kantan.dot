@@ -1,0 +1,9 @@
+digraph {
+    class=red
+    a
+
+    subgraph cluster_green {
+        class=green
+        b
+    }
+}

@@ -1,0 +1,14 @@
+graph {
+    "simple quoted atom"
+
+    "Atom with \"escaped quote\""
+
+    "Atom \with \other \escaped \ \characters"
+
+    "Atom" + "with" + "split" + "strings"
+
+    "Atom \
+with \
+escaped \
+linebreak"
+}

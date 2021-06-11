@@ -1,0 +1,23 @@
+edge {
+    color: black;
+}
+
+edge.red {
+    color: red;
+}
+
+edge.green {
+    color: green;
+}
+
+edge.blue {
+    color: blue;
+}
+
+edge.red.green {
+    color: yellow;
+}
+
+edge.blue.green {
+    color: cyan;
+}

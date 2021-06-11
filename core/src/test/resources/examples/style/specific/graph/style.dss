@@ -1,0 +1,7 @@
+graph.red {
+    bgcolor: red;
+}
+
+graph.green {
+    bgcolor: green;
+}

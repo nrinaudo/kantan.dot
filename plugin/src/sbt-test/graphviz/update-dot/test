@@ -1,0 +1,9 @@
+# Makes sure that all modified files, but only modified files, are recompiled.
+
+> graphviz
+
+$touch src/graphviz/sample1.dot
+
+> graphviz
+$ newer target/graphviz/sample1.svg src/graphviz/sample1.dot
+-$ newer target/graphviz/nested/sample2.svg src/graphviz/sample1.dot

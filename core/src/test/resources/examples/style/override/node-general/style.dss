@@ -1,0 +1,4 @@
+node {
+    color: red;
+    fontcolor: red;
+}

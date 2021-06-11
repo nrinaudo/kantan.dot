@@ -1,0 +1,6 @@
+graph {
+    a -- b[color=blue]
+
+    {c; d -- e} -- {f, g, h} -- subgraph {i, j, k}[color=red]
+
+}

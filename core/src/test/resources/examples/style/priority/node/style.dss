@@ -1,0 +1,23 @@
+node {
+    color: black;
+}
+
+node.red {
+    color: red;
+}
+
+node.green {
+    color:green;
+}
+
+node.blue {
+    color: blue;
+}
+
+node.red.green {
+    color:yellow;
+}
+
+node.blue.green {
+    color: cyan;
+}

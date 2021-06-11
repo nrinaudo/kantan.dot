@@ -1,0 +1,9 @@
+digraph {
+    a[color=yellow fontcolor=red]
+    b[color=green fontcolor=red]
+
+    subgraph {
+        c[color=blue fontcolor=red]
+        d[color=cyan fontcolor=red]
+    }
+}

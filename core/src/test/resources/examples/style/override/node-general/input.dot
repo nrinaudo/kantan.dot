@@ -1,0 +1,13 @@
+digraph {
+    node[color=green]
+
+    a[color=yellow]
+    b
+
+    subgraph {
+        node[color=cyan]
+
+        c[color=blue]
+        d
+    }
+}

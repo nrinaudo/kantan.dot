@@ -1,0 +1,9 @@
+# Makes sure that all files are recompiled when the stylesheet is touched.
+
+> graphviz
+
+$touch src/graphviz/style.dss
+
+> graphviz
+$ newer target/graphviz/sample1.svg src/graphviz/style.dss
+$ newer target/graphviz/nested/sample2.svg src/graphviz/style.dss
