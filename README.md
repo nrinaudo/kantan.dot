@@ -13,33 +13,37 @@ Since I don't expect kantan.dot to gain any sort of traction, I won't spend too 
 
 ### Stylesheet
 ```css
-// Sets the color of all nodes to red...
+/* Sets the color of all nodes to red... */
 node {
   color: red;
 }
 
-// ... except for those with class "white", which will be white.
-// The general rule is that the most specific selection wins:
-// node.white is more specific than node, so it wins in case of
-// conflicting values.
+/* ... except for those with class "white", which will be white.
+ * The general rule is that the most specific selection wins:
+ * node.white is more specific than node, so it wins in case of
+ * conflicting values.
+ */
 node.white {
   color: white;
 }
 
-// Edges are styled with the "edge" keyword, and work exactly the same
-// way as nodes.
+/* Edges are styled with the "edge" keyword, and work exactly the same
+ * way as nodes.
+ */
 edge.green {
   color: green;
 }
 
-// Same goes for graphs. kantan.dot does not (yet?) make a distinction
-// between root graph, subgraph and cluster.
+/* Same goes for graphs. kantan.dot does not (yet?) make a distinction
+ * between root graph, subgraph and cluster.
+ */
 graph.yellow {
   bgcolor: yellow;
 }
 
-// You can omit the element type if you want a rule to match all of them.
-// This applies to graphs, edges and nodes:
+/* You can omit the element type if you want a rule to match all of them.
+ * This applies to graphs, edges and nodes:
+ */
 .transparent {
   bgcolor: transparent;
 }
