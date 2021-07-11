@@ -1,5 +1,8 @@
 lazy val root = Project(id = "kantan-dot", base = file("."))
-  .settings(moduleName := "root")
+  .settings(
+    moduleName     := "root",
+    publish / skip := true
+  )
   .aggregate(core, plugin, sitePlugin, cli)
   .dependsOn(core)
 
