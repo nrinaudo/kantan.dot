@@ -77,8 +77,8 @@ addSbtPlugin("com.nrinaudo" % "kantan.dot-sbt" % "x.y.z")
 ```
 
 This defines:
-* `graphvizSourceDirectory`: source directory for DOT files (defaults to `./src/graphviz`).
-* `graphvizTargetDirectory`: target directory for compiled DOT files (defaults to `./target/graphviz`).
+* `graphvizSourceDirectory`: source directory for DOT files (defaults to `./src/main/graphviz`).
+* `graphvizTargetDirectory`: target directory for compiled DOT files (defaults to `./target/scala-2.12/graphviz`).
 * `graphvizStylesheet`: path to the stylesheet to apply (defaults to none).
 * `graphviz`: tasks that compiles all DOT files found in `graphvizSourceDirectory` to SVG files.
 

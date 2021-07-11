@@ -36,8 +36,8 @@ object GraphvizPlugin extends AutoPlugin {
   import autoImport._
 
   override lazy val projectSettings: Seq[Setting[_]] = Seq(
-    graphvizSourceDirectory := sourceDirectory.value / "graphviz",
-    graphvizTargetDirectory := target.value / "graphviz",
+    graphvizSourceDirectory := (Compile / sourceDirectory).value / "graphviz",
+    graphvizTargetDirectory := crossTarget.value / "graphviz",
     graphvizStylesheet      := None,
     graphviz := processDirectory(
       streams.value,

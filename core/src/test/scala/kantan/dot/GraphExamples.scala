@@ -21,16 +21,6 @@ class GraphExamples extends ExamplesSuite {
   testSeries("graph") { example =>
     val graph = Parse.parse[Graph](example).getOrElse(fail(s"Failed to load graph $example"))
 
-    if(Graphviz.eval(graph, Graphviz.Format.Fig) != Graphviz.eval(example, Graphviz.Format.Fig)) {
-      println("-------------------------------")
-      println("PARSED")
-      println(Graphviz.eval(graph, Graphviz.Format.Canon))
-      println("===============================")
-      println("RAW")
-      println(Graphviz.eval(example, Graphviz.Format.Canon))
-      println("-------------------------------")
-    }
-
     Graphviz.eval(graph, Graphviz.Format.Fig) should be(
       Graphviz.eval(example, Graphviz.Format.Fig)
     )

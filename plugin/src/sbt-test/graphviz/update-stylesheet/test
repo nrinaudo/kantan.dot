@@ -5,5 +5,5 @@
 $touch src/graphviz/style.dss
 
 > graphviz
-$ newer target/graphviz/sample1.svg src/graphviz/style.dss
-$ newer target/graphviz/nested/sample2.svg src/graphviz/style.dss
+$ newer target/scala-2.12/graphviz/sample1.svg src/main/graphviz/style.dss
+$ newer target/scala-2.12/graphviz/nested/sample2.svg src/main/graphviz/style.dss

@@ -1,4 +1,4 @@
 # Makes sure that the graphviz command is executed properly in the absence of a stylesheet
 > graphviz
-$ must-mirror target/graphviz/sample1.svg expected/sample1.svg
-$ must-mirror target/graphviz/nested/sample2.svg expected/sample2.svg
+$ must-mirror target/scala-2.12/graphviz/sample1.svg expected/sample1.svg
+$ must-mirror target/scala-2.12/graphviz/nested/sample2.svg expected/sample2.svg
