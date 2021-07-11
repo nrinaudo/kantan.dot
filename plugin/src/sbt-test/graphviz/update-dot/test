@@ -2,8 +2,8 @@
 
 > graphviz
 
-$touch src/graphviz/sample1.dot
+$touch src/main/graphviz/sample1.dot
 
 > graphviz
-$ newer target/graphviz/sample1.svg src/graphviz/sample1.dot
--$ newer target/graphviz/nested/sample2.svg src/graphviz/sample1.dot
+$ newer target/scala-2.12/graphviz/sample1.svg src/main/graphviz/sample1.dot
+-$ newer target/scala-2.12/graphviz/nested/sample2.svg src/main/graphviz/sample1.dot
