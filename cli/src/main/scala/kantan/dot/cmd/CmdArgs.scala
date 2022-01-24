@@ -50,7 +50,6 @@ object CmdArgs {
         .action((file, args) => args.copy(dot = Some(file)))
         .text("DOT file to apply style to"),
       opt[File]('o', "output")
-        .validate(isFile)
         .action((file, args) => args.copy(out = Some(file)))
         .text("where to write the resulting DOT content (defaults to STDOUT)"),
       help("help"),

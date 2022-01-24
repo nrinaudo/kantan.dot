@@ -133,9 +133,6 @@ Usage: dss [options]
   --version
 ```
 
-## Known limitations
-kantan.dot does not currently support HTML strings, because I never use them and they do *not* look like a fun parsing exercise.
-
 ## Possible evolutions
 
 * support for identifier-based selectors (a bit like CSS's `#foo`)
