@@ -30,7 +30,3 @@ project/plugins/project/
 
 # Mac
 .DS_Store
-
-# Auto-generated files
-.scalafmt.conf
-scalastyle-config.xml

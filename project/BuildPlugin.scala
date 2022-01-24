@@ -87,7 +87,7 @@ object BuildPlugin extends AutoPlugin {
       organizationHomepage := Some(url("https://nrinaudo.github.io")),
       organizationName     := "Nicolas Rinaudo",
       startYear            := Some(2021),
-      scalaVersion         := "2.12.12",
+      scalaVersion         := "2.12.15",
       licenses             := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
       homepage             := Some(url(s"https://nrinaudo.github.io/kantan.dot")),
       publishTo := Some(
