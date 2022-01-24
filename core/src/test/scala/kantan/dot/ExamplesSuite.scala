@@ -17,20 +17,20 @@
 package kantan.dot
 
 import java.io.File
-import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.Assertion
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 
 /** Test suite that reads examples from the `examples/` resource folder. */
 abstract class ExamplesSuite extends AnyFunSuite with Matchers {
 
-  def testSeries(name: String)(runTest: File => Assertion) = {
+  def testSeries(name: String)(runTest: File => Assertion): Unit = {
     val root = new File(getClass.getClassLoader.getResource(s"examples/$name").getFile());
 
     for {
       category <- root.listFiles.toList
       example  <- category.listFiles.toList
-    } yield test(s"${category.getName} / ${example.getName}") {
+    } test(s"${category.getName} / ${example.getName}") {
       runTest(example)
     }
   }

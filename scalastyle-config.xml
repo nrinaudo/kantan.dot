@@ -1,0 +1,37 @@
+<scalastyle>
+  <name>kantan configuration</name>
+
+
+  <!-- = Misc. =================================================================================================== -->
+  <!-- =========================================================================================================== -->
+  <check class="org.scalastyle.scalariform.CovariantEqualsChecker"           level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.DeprecatedJavaChecker"            level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.EmptyClassChecker"                level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.EmptyInterpolatedStringChecker"   level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.EqualsHashCodeChecker"            level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.ImportOrderChecker"               level="error"   enabled="true">
+    <parameters>
+      <parameter name="groups">all</parameter>
+      <parameter name="group.all">.+</parameter>
+      <parameter name="lexicographic">true</parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.NoCloneChecker"                   level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.NoFinalizeChecker"                level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.NotImplementedErrorUsage"         level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.OverrideJavaChecker"              level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.PublicMethodsHaveTypeChecker"     level="error"   enabled="true">
+    <parameters>
+      <parameter name="ignoreOverride">true</parameter>
+    </parameters>
+  </check>
+  <check class="org.scalastyle.scalariform.RedundantIfChecker"               level="warning" enabled="true"/>
+  <check class="org.scalastyle.scalariform.SimplifyBooleanExpressionChecker" level="error"   enabled="true"/>
+  <check class="org.scalastyle.scalariform.StructuralTypeChecker"            level="warning" enabled="true"/>
+  <check class="org.scalastyle.scalariform.UppercaseLChecker"                level="error"   enabled="true"/>
+  <check class="org.scalastyle.file.RegexChecker"                            level="warning" enabled="true">
+    <parameters>
+      <parameter name="regex">println</parameter>
+    </parameters>
+  </check>
+</scalastyle>
