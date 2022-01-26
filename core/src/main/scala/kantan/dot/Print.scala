@@ -91,7 +91,7 @@ object Print {
       printClasses(selector.classes, out)
     }
 
-    def printAttributes(attributes: Map[String, String], out: Writer): Unit = {
+    def printAttributes(attributes: Map[Id, Id], out: Writer): Unit = {
       out.write(" {\n")
       attributes.foreach {
         case (key, value) =>
@@ -122,17 +122,23 @@ object Print {
   // - Graph instances -------------------------------------------------------------------------------------------------
   // -------------------------------------------------------------------------------------------------------------------
   private object graph {
-    def printAtom(atom: String, out: Writer): Unit = {
-      // This could be improved quite a bit (and is in fact probably a little bit buggy when it comes to escaping).
-      // I'm simply quoting every single atom, which is technically correct but also not very pleasant to read. I'm
-      // ok with that for the moment, as the output of kantan.dot is not meant for human consumption, but might get
-      // tired of it at some point and fix it.
-      out.write("\"")
-      out.write(atom.replace("\"", "\\\""))
-      out.write("\"")
+    def printAtom(atom: Id, out: Writer): Unit = atom match {
+      case Id.Text(str) =>
+        // This could be improved quite a bit (and is in fact probably a little bit buggy when it comes to escaping).
+        // I'm simply quoting every single atom, which is technically correct but also not very pleasant to read. I'm
+        // ok with that for the moment, as the output of kantan.dot is not meant for human consumption, but might get
+        // tired of it at some point and fix it.
+        out.write("\"")
+        out.write(str.replace("\"", "\\\""))
+        out.write("\"")
+
+      case Id.Html(str) =>
+        out.write("<")
+        out.write(str)
+        out.write(">")
     }
 
-    def printAttributeStatement(name: String, attributes: Map[String, String], indent: Int, out: Writer): Unit =
+    def printAttributeStatement(name: String, attributes: Map[Id, Id], indent: Int, out: Writer): Unit =
       if(attributes.nonEmpty) {
         printIndent(indent, out)
         out.write(name)
@@ -140,7 +146,7 @@ object Print {
       }
 
     @SuppressWarnings(Array("org.wartremover.warts.Var"))
-    def printAttributes(attributes: Map[String, String], out: Writer): Unit = if(attributes.nonEmpty) {
+    def printAttributes(attributes: Map[Id, Id], out: Writer): Unit = if(attributes.nonEmpty) {
       out.write("[")
       var isFirst = true
       attributes.foreach {

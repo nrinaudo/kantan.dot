@@ -72,30 +72,49 @@ package object scalacheck {
     1 -> quoted
   )
 
-  private implicit val arbAtom: Arbitrary[String] = Arbitrary(atom)
+  val id: Gen[Id] = Gen.oneOf(
+    atom.map(Id.Text.apply),
+    arbitrary[Html].map(htmlToId)
+  )
 
-  private implicit val shrinkAtom: Shrink[String] = {
+  private def htmlToId(html: Html): Id = Id.Html(Print.toString(html))
+
+  private implicit val arbId: Arbitrary[Id] = Arbitrary(id)
+
+  private implicit val shrinkId: Shrink[Id] = {
     implicit val shrinkChar: Shrink[Char] = Shrink.shrinkAny
 
-    Shrink(str => shrink(str.toList).map(_.mkString))
+    Shrink {
+      case Id.Text(str) => shrink(str.toList).map(cs => Id.Text(cs.mkString))
+      case Id.Html(str) =>
+        Parse.parse[Html](str) match {
+          case Left(_)     => Stream.empty
+          case Right(html) => shrink(html).map(htmlToId)
+        }
+    }
   }
 
-  private implicit val shrinkAttribute: Shrink[(String, String)] = Shrink {
+  private def nonEmpty(id: Id) = id match {
+    case Id.Text(str) => str.nonEmpty
+    case Id.Html(str) => str.nonEmpty
+  }
+
+  private implicit val shrinkAttribute: Shrink[(Id, Id)] = Shrink {
     case (key, value) =>
-      shrink(key).filter(_.nonEmpty).map(k => (k, value)) #:::
+      shrink(key).filter(nonEmpty).map(k => (k, value)) #:::
         shrink(value).map(v => (key, v))
   }
 
-  private implicit val shrinkAttributes: Shrink[Map[String, String]] = Shrink { map =>
+  private implicit val shrinkAttributes: Shrink[Map[Id, Id]] = Shrink { map =>
     shrink(map.toList).map(_.toMap)
   }
 
   // - Node ------------------------------------------------------------------------------------------------------------
   // -------------------------------------------------------------------------------------------------------------------
-  val rawNodeId: Gen[String] = Gen.sized(size => Gen.resize(size / 10, atom)).filter(_.nonEmpty)
+  val rawNodeId: Gen[Id] = Gen.sized(size => Gen.resize(size / 10, id)).filter(nonEmpty)
 
-  val compassPoint: Gen[String] =
-    Gen.oneOf("n", "ne", "e", "se", "s", "sw", "w", "nw", "c", "_")
+  val compassPoint: Gen[Id.Text] =
+    Gen.oneOf("n", "ne", "e", "se", "s", "sw", "w", "nw", "c", "_").map(Id.Text.apply)
 
   val port: Gen[Port] = {
     val simple = compassPoint.map(Port.Simple)
@@ -116,7 +135,7 @@ package object scalacheck {
 
   implicit val shrinkPort: Shrink[Port] = Shrink {
     case Port.Simple(id) =>
-      Port.None #:: shrink(id).filter(_.nonEmpty).map(Port.Simple)
+      Port.None #:: shrink(id).filter(nonEmpty).map(Port.Simple)
 
     case port: Port.Compound =>
       Port.None #:: Port.Simple(port.id) #::
@@ -134,7 +153,7 @@ package object scalacheck {
   implicit val arbNodeId: Arbitrary[NodeId] = Arbitrary(nodeId)
 
   implicit val shrinkNodeId: Shrink[NodeId] = Shrink { nodeId =>
-    shrink(nodeId.id).filter(_.nonEmpty).map(id => nodeId.copy(id = id)) #:::
+    shrink(nodeId.id).filter(nonEmpty).map(id => nodeId.copy(id = id)) #:::
       shrink(nodeId.port).map(port => nodeId.copy(port = port))
   }
 
@@ -200,7 +219,7 @@ package object scalacheck {
   // -------------------------------------------------------------------------------------------------------------------
   def subgraph(depth: Int): Gen[Subgraph] =
     for {
-      id      <- arbitrary[Option[String]]
+      id      <- arbitrary[Option[Id]]
       content <- graphContent(depth)
     } yield Subgraph(id, content)
 
@@ -269,7 +288,7 @@ package object scalacheck {
 
   // - Rule ------------------------------------------------------------------------------------------------------------
   // -------------------------------------------------------------------------------------------------------------------
-  def attributesFor(entity: Entity): Gen[Map[String, String]] = {
+  def attributesFor(entity: Entity): Gen[Map[Id, Id]] = {
     val attrs = entity match {
       case Entity.Node  => attributes.forNodes
       case Entity.Edge  => attributes.forEdges
@@ -300,7 +319,7 @@ package object scalacheck {
   // - Graph -----------------------------------------------------------------------------------------------------------
   // -------------------------------------------------------------------------------------------------------------------
   val graph: Gen[Graph] = for {
-    id       <- arbitrary[Option[String]]
+    id       <- arbitrary[Option[Id]]
     strict   <- arbitrary[Boolean]
     directed <- arbitrary[Boolean]
     content  <- arbitrary[GraphContent]

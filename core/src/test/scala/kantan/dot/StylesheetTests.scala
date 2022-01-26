@@ -32,7 +32,7 @@ class StylesheetTests extends AnyFunSuite with Matchers with ScalaCheckDrivenPro
   test("Extracting classes should work as expected") {
 
     forAll(attributes.forNodes, classes) { (attrs, classes) =>
-      val attrsWithClass = attrs + ("class" -> classes.mkString(","))
+      val attrsWithClass = attrs + (Id.Text("class") -> Id.Text(classes.mkString(",")))
       Stylesheet.extractClasses(attrsWithClass) should be(classes)
     }
   }

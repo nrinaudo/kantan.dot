@@ -17,7 +17,7 @@
 package kantan.dot
 
 /** Root of a diagram. */
-final case class Graph(id: Option[String], strict: Boolean, directed: Boolean, content: GraphContent)
+final case class Graph(id: Option[Id], strict: Boolean, directed: Boolean, content: GraphContent)
 
 /** Content of graphs and subgraphs.
   *
@@ -30,16 +30,16 @@ final case class Graph(id: Option[String], strict: Boolean, directed: Boolean, c
   * }
   * }}}
   *
-  * These are aggregated into a single `Map[String, String]` containing the final value of each attribute. Note that
+  * These are aggregated into a single `Map[Id, Id]` containing the final value of each attribute. Note that
   * this is a lossy transformation (we can't get back to the original input) but one that has no impact on the final
   * diagram, as we only lose syntax, not semantics.
   */
-final case class GraphContent(attributes: Map[String, String], statements: List[Statement]) {
+final case class GraphContent(attributes: Map[Id, Id], statements: List[Statement]) {
   @SuppressWarnings(Array("org.wartremover.warts.ListAppend"))
   def +(statement: Statement): GraphContent =
     copy(statements = statements :+ statement)
 
-  def ++(attrs: Map[String, String]): GraphContent =
+  def ++(attrs: Map[Id, Id]): GraphContent =
     copy(attributes = attributes ++ attrs)
 
   def ++(stmts: List[Statement]): GraphContent =
@@ -54,8 +54,16 @@ final case class GraphContent(attributes: Map[String, String], statements: List[
 object GraphContent {
   val empty: GraphContent = GraphContent(Map.empty, List.empty)
 
-  def apply(statements: List[Statement]): GraphContent     = GraphContent(Map.empty, statements)
-  def apply(attributes: Map[String, String]): GraphContent = GraphContent(attributes, List.empty)
+  def apply(statements: List[Statement]): GraphContent = GraphContent(Map.empty, statements)
+  def apply(attributes: Map[Id, Id]): GraphContent     = GraphContent(attributes, List.empty)
+}
+
+/** Represents an identifier as defined by the Graphviz specs. */
+sealed abstract class Id extends Product with Serializable
+
+object Id {
+  final case class Text(content: String) extends Id
+  final case class Html(content: String) extends Id
 }
 
 /** Statement that can be found inside of a graph / subgraph. */
@@ -67,37 +75,37 @@ sealed abstract class Attributes extends Statement
 object Attributes {
 
   /** Attributes that apply to all nodes in the graph and its descendants. */
-  final case class Node(value: Map[String, String]) extends Attributes
+  final case class Node(value: Map[Id, Id]) extends Attributes
 
   /** Attributes that apply to all edges in the graph and its descendants. */
-  final case class Edge(value: Map[String, String]) extends Attributes
+  final case class Edge(value: Map[Id, Id]) extends Attributes
 }
 
 /** Things that have a visual representation (nodes, edges or subgraphs). */
 sealed abstract class Element extends Statement {
-  def attributes: Map[String, String]
+  def attributes: Map[Id, Id]
 }
 
 /** A point in a graph. */
-final case class Node(id: String, attributes: Map[String, String]) extends Element {
-  def addAttributes(attrs: Map[String, String]): Node = copy(attributes = attributes ++ attrs)
+final case class Node(id: Id, attributes: Map[Id, Id]) extends Element {
+  def addAttributes(attrs: Map[Id, Id]): Node = copy(attributes = attributes ++ attrs)
 }
 
 /** A link between two nodes. */
-final case class Edge(head: NodeId, tail: NodeId, attributes: Map[String, String]) extends Element {
-  def addAttributes(attrs: Map[String, String]): Edge = copy(attributes = attributes ++ attrs)
+final case class Edge(head: NodeId, tail: NodeId, attributes: Map[Id, Id]) extends Element {
+  def addAttributes(attrs: Map[Id, Id]): Edge = copy(attributes = attributes ++ attrs)
 }
 
 /** A nested graph. */
-final case class Subgraph(id: Option[String], content: GraphContent) extends Element {
+final case class Subgraph(id: Option[Id], content: GraphContent) extends Element {
   override def attributes = content.attributes
 }
 
 /** Unique node identifier. */
-final case class NodeId(id: String, port: Port)
+final case class NodeId(id: Id, port: Port)
 
 object NodeId {
-  def apply(id: String): NodeId = NodeId(id, Port.None)
+  def apply(id: Id): NodeId = NodeId(id, Port.None)
 }
 
 /** Port part of a node identifier.
@@ -106,7 +114,7 @@ object NodeId {
   */
 sealed abstract class Port extends Product with Serializable
 object Port {
-  final case object None                               extends Port
-  final case class Simple(id: String)                  extends Port
-  final case class Compound(id: String, point: String) extends Port
+  final case object None                       extends Port
+  final case class Simple(id: Id)              extends Port
+  final case class Compound(id: Id, point: Id) extends Port
 }

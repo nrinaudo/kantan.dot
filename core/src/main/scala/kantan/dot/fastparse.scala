@@ -27,7 +27,7 @@ import _root_.fastparse._
     "org.wartremover.warts.StringPlusAny"
   )
 )
-/** Defines all parses for DOT and DSS files.
+/** Defines all parsers for DOT and DSS files.
   *
   * There should be very little reason to interact with this directly, as it's abstracted over in the more convenient
   * `Parse`.
@@ -84,9 +84,19 @@ object fastparse {
     (P("\"") ~~ quotedContent ~~ P("\"")).rep(min = 1, sep = "+").map(_.mkString)
   }
 
+  def html[_: P]: P[Id.Html] = {
+    def raw = CharsWhile(c => c != '<' && c != '>').!.map(_.toString)
+    def tag = P("<") ~~ raw.map(s => s"<$s>") ~~ P(">")
+
+    P("<") ~~ (raw | tag).repX.map(ss => Id.Html(ss.mkString)) ~~ P(">")
+  }
+
+  def string[_: P]: P[Id.Text] =
+    (alphaNum | num | quoted).map(Id.Text.apply)
+
   /** Any atom. */
-  def atom[_: P]: P[String] =
-    alphaNum | num | quoted
+  def atom[_: P]: P[Id] =
+    string | html
 
   // - Attributes ------------------------------------------------------------------------------------------------------
   // -------------------------------------------------------------------------------------------------------------------
@@ -95,14 +105,14 @@ object fastparse {
     * The DOT specifications allow multiple sequences of brackets, but since that has exactly the same meaning as
     * a single one, we just collapse everything into a single `Map[String, String]`.
     */
-  def attributes[_: P]: P[Map[String, String]] = {
+  def attributes[_: P]: P[Map[Id, Id]] = {
     def list = ("[" ~ (atom ~ "=" ~ atom ~ (";" | ",").?).rep ~ "]")
 
-    list.rep(1).map(_.foldLeft(Map.empty[String, String])(_ ++ _.toMap))
+    list.rep(1).map(_.foldLeft(Map.empty[Id, Id])(_ ++ _.toMap))
   }
 
   /** Optional attributes: if absent, will yield the empty set of attributes. */
-  def optAttributes[_: P]: P[Map[String, String]] = attributes.?.map(_.getOrElse(Map.empty))
+  def optAttributes[_: P]: P[Map[Id, Id]] = attributes.?.map(_.getOrElse(Map.empty))
 
   /** Attributes statement
     *
@@ -220,7 +230,7 @@ object fastparse {
     *
     * We simply associate every node on the left to every node on the right.
     */
-  private def mergeNodes(lhs: List[NodeId], rhs: List[NodeId], attrs: Map[String, String]): List[Edge] =
+  private def mergeNodes(lhs: List[NodeId], rhs: List[NodeId], attrs: Map[Id, Id]): List[Edge] =
     for {
       head <- lhs
       tail <- rhs

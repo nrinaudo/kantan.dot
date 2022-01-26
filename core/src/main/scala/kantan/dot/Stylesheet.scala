@@ -19,12 +19,12 @@ package kantan.dot
 /** A set of rules to apply to graphs. */
 final case class Stylesheet(rules: List[Rule]) {
 
-  private def applyToEntity(entity: Entity, attributes: Map[String, String], rules: List[Rule]): Map[String, String] = {
+  private def applyToEntity(entity: Entity, attributes: Map[Id, Id], rules: List[Rule]): Map[Id, Id] = {
     val classes = Stylesheet.extractClasses(attributes)
 
     val matchingRules = rules.filter(_.selector.matches(entity, classes))
 
-    val derivedAttributes = matchingRules.foldLeft(Map.empty[String, String]) { (attributes, rule) =>
+    val derivedAttributes = matchingRules.foldLeft(Map.empty[Id, Id]) { (attributes, rule) =>
       attributes ++ rule.attributes
     }
 
@@ -86,13 +86,13 @@ object Stylesheet {
   def apply(rules: Rule*): Stylesheet = Stylesheet(rules.toList)
 
   /** Extracts the classes declared in the specified set of attributes. */
-  def extractClasses(attributes: Map[String, String]): Set[String] = {
+  def extractClasses(attributes: Map[Id, Id]): Set[String] = {
     val builder = Set.newBuilder[String]
 
     attributes.foreach {
-      case (key, value) =>
-        if(key == "class")
-          builder ++= value.split(",").filter(_.nonEmpty)
+      case (Id.Text(key), Id.Text(value)) if key == "class" =>
+        builder ++= value.split(",").filter(_.nonEmpty)
+      case _ => // Ignores non-textual values, because I'm not really sure what to do there...
     }
 
     builder.result()
@@ -100,7 +100,7 @@ object Stylesheet {
 }
 
 /** A rule applies a set of attributes to all elements that match its selector. */
-final case class Rule(selector: Selector, attributes: Map[String, String])
+final case class Rule(selector: Selector, attributes: Map[Id, Id])
 
 /** A set of criterias used to select a given set of elements in a graph. */
 final case class Selector(entity: Entity, classes: Set[String]) {
